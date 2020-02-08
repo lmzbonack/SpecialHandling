@@ -1,0 +1,69 @@
+// Set a minimum app width
+body {
+    min-width: 500px;
+}
+
+// Router transition animation
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s ease;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0
+}
+
+// Toolbars on main pages
+.toolbar {
+    margin-bottom: 0.25em;
+}
+
+// Make column panel toggle button collapse on narrow widths
+#columnsFilterButton {
+    @media screen and (max-width: 710px) {
+        i {
+            margin-right: 0px !important;
+        }
+
+        .btn-label {
+            display: none;
+        }
+    }
+}
+
+// Layout for grid and columns filters
+$panel-breakpoint: 768px;
+
+.flex-bigly-row {
+    display: flex;
+    flex: auto;
+    height: 100%;
+    width: 100%;
+    flex-direction: row;
+
+    @media screen and (max-width: $panel-breakpoint) {
+        flex-direction: column;
+    }
+
+}
+
+.panel {
+    width: 20vw;
+    max-width: 320px;
+    min-width: 220px;
+    margin-left: -1px;
+
+    @media screen and (max-width: $panel-breakpoint) {
+        margin-left: 0;
+        margin-bottom: -1;
+        order: 1;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+.grid {
+    @media screen and (max-width: $panel-breakpoint) {
+        order: 2;
+    }
+}

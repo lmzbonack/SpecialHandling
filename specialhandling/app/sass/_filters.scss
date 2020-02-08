@@ -1,0 +1,12 @@
+.search-form {
+    padding: 0.25em;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+
+    .form-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}

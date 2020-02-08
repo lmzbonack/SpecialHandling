@@ -1,0 +1,162 @@
+services:
+  - postgres:9.6
+
+stages:
+  - setup
+  - syntax
+  - test
+  - deploy
+
+variables:
+  POSTGRES_DB: specialhandling
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: ''
+# Cache pip, npm where we can see them easily
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pipcache"
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+setup_db:
+  stage: setup
+  image: postgres:9.6
+  script:
+    - locale-gen en_US.UTF-8
+    - export PGPASSWORD=$POSTGRES_PASSWORD
+    - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+
+setup_virtualenv:
+  stage: setup
+  image: python:3.5
+  script:
+    - pip3 install virtualenv
+    - virtualenv .virtualenvs -p python3
+    - source .virtualenvs/bin/activate
+    - pip3 install -r specialhandling/requirements/local.txt
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - .virtualenvs
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-virtualenv
+    paths:
+      - .pipcache
+
+setup_frontend:
+  stage: setup
+  image: node:8
+  script:
+    - cd specialhandling
+    - npm install
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - .npm
+      - specialhandling/node_modules
+      - specialhandling/specialhandling/static/js
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-frontend
+    paths:
+      - specialhandling/node_modules
+      - .npm
+
+syntax_js:
+  stage: syntax
+  image: node:8
+  when: always
+  script:
+    - cd specialhandling
+    - npm run lint
+  dependencies:
+    - setup_frontend
+
+syntax_py:
+  stage: syntax
+  image: python:3.5
+  when: always
+  script:
+    - source .virtualenvs/bin/activate
+    - prospector -P specialhandling/.prospector.yaml | tee lint.txt || true
+    - messages=$(awk '/Messages Found:/{print $NF}' lint.txt)
+    - if [ $messages -gt 0 ]; then echo "Please check your syntax"; exit 1; fi
+  dependencies:
+    - setup_virtualenv
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+      - lint.txt
+
+test_backend:
+  stage: test
+  image: python:3.5
+  script:
+    - source .virtualenvs/bin/activate
+    - cd specialhandling
+    - export DJANGO_SETTINGS_MODULE="config.settings.test"
+    - python3 manage.py makemigrations checks signatures comments --noinput
+    - python3 manage.py migrate
+    - coverage run --source="." manage.py test --debug-mode
+    - coverage report && coverage html
+  coverage: '/^TOTAL\s+\d+\s+\d+\s+(\d+\%)/'
+  dependencies:
+    - setup_virtualenv
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+      - specialhandling/htmlcov
+
+test_frontend:
+  stage: test
+  image: node:8
+  script:
+    - cd specialhandling
+    - npm run unit -- --updateSnapshot --coverage --colors
+  dependencies:
+    - setup_frontend
+
+deploy_development:
+  stage: deploy
+  image: ubuntu:xenial
+  script:
+    - 'which ssh-agent || ( apt-get update -qqy && apt-get install openssh-client rsync -y )'
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p "${HOME}/.ssh"
+    - echo "${SSH_PUBLIC_KEY}" > "${HOME}/.ssh/id_rsa.pub"
+    - ssh-keyscan -H specialhandling-dev.fso.arizona.edu >> ~/.ssh/known_hosts
+    - rsync -glruz --groupmap=*:$GROUP --exclude={.git,.cache,.npm,htmlcov,pylint.log,lint.txt,__init__.py} . $SERVER_USER@specialhandling-dev.fso.arizona.edu:/var/www/specialhandling
+  retry: 2
+  dependencies:
+    - setup_frontend
+    - setup_virtualenv
+  only:
+    - develop
+  environment:
+    name: development
+    url: https://specialhandling-dev.fso.arizona.edu
+
+deploy_production:
+  stage: deploy
+  image: ubuntu:xenial
+  script:
+    - 'which ssh-agent || ( apt-get update -qqy && apt-get install openssh-client rsync -y )'
+    - eval $(ssh-agent -s)
+    # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    # WARNING: Use this only with the Docker executor, if you use it with shell
+    # you will overwrite your user's SSH config.
+    - mkdir -p "${HOME}/.ssh"
+    - echo "${SSH_PUBLIC_KEY}" > "${HOME}/.ssh/id_rsa.pub"
+    - ssh-keyscan -H specialhandling.fso.arizona.edu >> ~/.ssh/known_hosts
+    - rsync -glruz --groupmap=*:$GROUP --exclude={.git,.cache,.npm,htmlcov,pylint.log,lint.txt,__init__.py} . $SERVER_USER@specialhandling.fso.arizona.edu:/var/www/specialhandling
+  retry: 2
+  dependencies:
+    - setup_frontend
+    - setup_virtualenv
+  only:
+    - master
+  environment:
+    name: production
+    url: https://specialhandling.fso.arizona.edu

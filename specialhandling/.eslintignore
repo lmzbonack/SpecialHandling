@@ -1,0 +1,6 @@
+**/*.html
+node_modules
+**/*.scss
+**/*.css
+app/tests/unit/__utils__
+app/tests/unit/pages/__snapshots__

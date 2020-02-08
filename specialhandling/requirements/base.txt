@@ -1,0 +1,27 @@
+Django>=1.11,<2.0
+djangorestframework>=3.7,<3.8
+psycopg2-binary>=2.7,<2.8
+raven>=6.0,<7.0
+simplejson>=3.13,<3.14
+requests[security]
+
+# Configuration
+django-environ==0.4.4
+
+# Models
+django-model-utils==3.1.1
+
+# Password hashing
+argon2-cffi
+
+# Images
+Pillow==5.0.0
+
+# Time zones support
+pytz==2018.3
+
+# CSS minifier
+rcssmin==1.0.6 
+
+# Your custom requirements go here
+django-webpack-loader==0.5.0

@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<nav class="navbar navbar-toggleable-sm navbar-light bg-ash-tint" role="navigation">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand py-0 my-auto" href="{% url 'home' %}">Special Handling</a>
+    <div class="collapse navbar-collapse" id="navbar-content">
+        <ul class="navbar-nav mr-auto">
+            <li id="home" class="nav-item">
+                <a class="nav-link" href="#/home">Home</a>
+            </li>
+            <li id="signed-checks" class="nav-item">
+                <a class="nav-link" href="#/signed-checks">Signed Checks</a>
+            </li>
+            <li id="signatures" class="nav-item">
+                <a class="nav-link" href="#/signatures">Signatures</a>
+            </li>
+        </ul>
+        <hr class="navbar-collapsed-only">
+        <ul class="nav navbar-nav ml-auto">
+            {% comment %} <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fa fa-book" aria-hidden="true"></i> User Guide</a>
+            </li> {% endcomment %}
+            {% if request.user.is_authenticated %}
+                {% for group in user.groups.all %}
+                {% if group.name == 'user_admins' %}
+                    <li {% if request.resolver_match.url_name == 'auth-admin' %}class="active"{% endif %} class="nav-item">
+                        <a class="nav-link" href="{% url 'auth-admin' %}"><i class="fa fa-user" aria-hidden="true"></i> User Admin</a>
+                    </li>
+                {% endif %}
+                {% endfor %}
+                <li {% if request.resolver_match.url_name == 'logout' %}class="active"{% endif %} class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Log Out</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

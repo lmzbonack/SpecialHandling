@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}404: Page Not found{% endblock %}
+{% block content %}
+<div class="error-page">
+    <video id="background" preload="auto" autoplay="true" loop="loop" muted="muted">
+        <source src="{% static 'images/nothing_to_see_here_naked_gun.mp4' %}" type="video/mp4">
+        Sorry, your browser does not support HTML5 video.
+    </video>
+    <div class="error-container">
+        <h1 class="display-1">404</h1>
+        <h2 class="mt-8">Oops, the page you're looking for does not exist.</h2>
+        <p class="lead">You may want to head back to the homepage.<br>If you think something is broken, report a problem.</p>
+        <a role="button" class="btn btn-uared btn-md" aria-pressed="true"
+           href="http://specialhandling.fso.arizona.edu">Return Home</a>
+        <a role="button" class="btn btn-uared btn-md" aria-pressed="true"
+           href="mailto:support@fso.arizona.edu?subject=specialhandling support request">Report a Problem</a>
+    </div>
+</div>
+{% endblock content %}

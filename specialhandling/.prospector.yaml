@@ -1,0 +1,37 @@
+strictness: high
+test-warnings: true
+doc-warnings: true
+
+uses:
+  - celery
+  - django
+
+ignore-paths:
+  - node_modules
+  - settings
+
+ignore-patterns:
+  - (^|/)skip(this)?(/|$)
+
+pep8:
+  disable:
+    - E501
+  options:
+    max-line-length: 159
+
+pep257:
+  disable:
+    - D102
+    - D104
+    - D105
+    - D106
+    - D211
+    - D212
+
+pylint:
+  disable:
+    - invalid-name
+    - too-many-ancestors
+    - too-many-instance-attributes
+  options:
+    max-line-length: 159

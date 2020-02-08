@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}403: Forbidden{% endblock %}
+{% block content %}
+<div class="error-page">
+    <video id="background" preload="auto" autoplay="true" loop="loop" muted="muted">
+        <source src="{% static 'images/jurrasic_park_didnt_say_the_magic_word.mp4' %}" type="video/mp4">
+        Sorry, your browser does not support HTML5 video.
+    </video>
+    <div class="error-container">
+        <h1 class="display-1">403</h1>
+        <h2 class="mt-8">Ah ah ah! You didn't say the magic word!</h2>
+        <p class="lead">You don't have permission to access this page!<br>If you think something is broken, report a problem.</p>
+        <a role="button" class="btn btn-uared btn-md" aria-pressed="true"
+           href="http://specialhandling.fso.arizona.edu">Return Home</a>
+        <a role="button" class="btn btn-uared btn-md" aria-pressed="true"
+           href="mailto:support@fso.arizona.edu?subject=specialhandling support request">Report a Problem</a>
+    </div>
+</div>
+{% endblock content %}

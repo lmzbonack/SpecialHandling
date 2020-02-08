@@ -1,0 +1,80 @@
+/* Styling for print version of the page */
+
+@media print {
+    /* Various UI chrome changes (color, visibility, etc) */
+    .ba-header {
+        background-color: #ffffff !important;
+    }
+
+    .ba-header img {
+        filter: invert(100);
+    }
+
+    footer {
+        background-color: #ffffff !important;
+    }
+
+    .ba-footer-links {
+        display: none !important;
+    }
+
+    .bg-silver-tint {
+        background-color: #ffffff !important;
+    }
+
+    .navbar {
+        background-color: #ffffff !important;
+    }
+
+    .navbar .navbar-collapse {
+        display: none !important;
+    }
+
+    .navbar .navbar-toggler {
+        display: none !important;
+    }
+
+    /* Removing/modifying ui chrome for visibility */
+    .card-header {
+        background-color: #ffffff !important;
+        /* border-bottom-color: #444444 !important; */
+    }
+
+    .nav-tabs .nav-link.active {
+        border-color: #444444 !important;
+        border-bottom: none !important;
+    }
+
+    .nav-tabs .nav-item {
+        margin-bottom: -2px !important;
+    }
+
+    .back-button {
+        display: none !important;
+    }
+
+    .toolbar {
+        display: none !important;
+    }
+
+    .advanced-search__wrapper {
+        display: none !important;
+    }   
+
+    /* Table */
+    thead th {
+        color: #000000 !important;
+    }
+
+    thead th .fees-link {
+        color: #000000 !important;
+    }
+
+    /* Why are the header's showing lower 1st characters? */
+    /* this fixes it for some god-forsaken reason */
+    h4::first-letter {
+        margin: 0;
+        padding: 0;
+    }
+
+}

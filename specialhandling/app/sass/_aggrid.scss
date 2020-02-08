@@ -1,0 +1,74 @@
+// AgGrid
+
+.grid {
+    width: 100%;
+    height: 100%;
+}
+
+.grid-wrapper {
+    height: 70vh !important;
+}
+
+// This is a WIP attempt at a purely flex-rendered grid
+// .grid-wrapper {
+//     display: flex;
+//     flex: 1 100%;
+//     max-width: 100%;
+//     max-height: 100%;
+//     box-sizing: border-box;
+//     flex-direction: column;
+//     overflow: hidden;
+// }
+
+.grid-flex {
+    display: flex;
+    flex: auto;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: row;
+}
+
+.grid-flex #borderLayout_eRootPanel {
+    display: flex;
+    width: 100%;
+}
+
+.ag-overlay-loading-center{
+    text-align: center;
+    justify-content: center;
+}
+
+// ag-theme-fso (a.k.a. FSO-Bootstrap for ag-grid)
+//
+// To theme ag-grid, we create some variables that will override the defaults in ag-grid's balham theme.
+// We also need to replicate the way ag-grid generates its themes, so don't mind the mess of stuff below.
+
+// Icons
+$icons-path: "~ag-grid/src/styles/balham-icons/" !default;
+$icon-size: 20px !default;
+$icon-color: $silver-dark !default;
+
+// Fonts
+$font-family: $font-family-sans-serif !default;
+$font-size: 16px !default;
+$secondary-font-size: 14px !default;
+$secondary-foreground-color: $silver-dark !default;
+
+// Colors
+$active: #1e5288 !default; // New UA Branding "Azurite"
+$selected-color: rgba($sky, .5) !default;
+$hover-color: #f4ede5 !default; // New UA Branding "Warm Gray"
+$chrome-background: #e2e9eb !default; // New UA Branding "Cool Gray"
+$alt-background: darken($silver-tint, 3);
+$odd-row-background-color: $ash-tint !default;
+$border-color: rgba(0, 0, 0, 0.125) !default;
+$cell-data-changed-color: $silver-tint !default;
+$value-change-delta-up-color: $cactus !default;
+$value-change-delta-down-color: $uared-white30 !default;
+$grid-size: 4px !default;
+
+@import "~ag-grid/src/styles/ag-grid";
+@import "~ag-grid/src/styles/ag-theme-balham";
+

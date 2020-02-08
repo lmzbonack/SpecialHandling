@@ -1,0 +1,14 @@
+### Webpack ###
+**/static/js/
+### Webpack ###
+**/static/js/
+
+### Jest ###
+__snapshots__/
+
+### Nightwatch ###
+**/e2e/reports/
+
+### Logging ###
+eslintlog.html
+selenium-debug.log

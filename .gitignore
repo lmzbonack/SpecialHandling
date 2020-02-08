@@ -1,0 +1,76 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### SublimeText cache files ###
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+*.sublime-project
+
+### sftp configuration file ###
+sftp-config.json
+
+### Basics ###
+*.py[cod]
+__pycache__
+_build
+
+### Logs ###
+*.log
+pip-log.txt
+
+### Unit test / coverage reports ###
+.coverage
+.tox
+nosetests.xml
+htmlcov
+
+### Translations ###
+*.mo
+*.pot
+
+### Pycharm ###
+.idea/*
+
+### Vim ###
+*~
+*.swp
+*.swo
+
+### npm ###
+node_modules/
+
+### bower ###
+bower_components/
+vendor/
+
+### Compass ###
+.sass-cache
+
+### Generated files ###
+*.vagrant
+*.virtualenvs
+staticfiles/
+
+### virtual environments ###
+.env
+
+### User-uploaded media ###
+media/
+
+### Hitch directory ###
+tests/.hitch
+
+### Model Migrations (During Development) ###
+migrations/
+
+### VSCode ###
+.vscode/

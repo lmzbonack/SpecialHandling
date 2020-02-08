@@ -1,0 +1,17 @@
+[run]
+omit =
+    *migrations*
+    *tests*
+    */config/*
+    */docs/*
+plugins =
+    django_coverage_plugin
+
+[report]
+omit =
+    */config/*
+    */docs/*
+
+[html]
+directory = htmlcov
+title = "specialhandling Coverage Report"

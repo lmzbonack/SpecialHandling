@@ -1,0 +1,43 @@
+#!/bin/bash
+# startapp
+
+app=$1 # an app name can't contain spaces
+name=$2
+netid=$3
+
+#This script expects itself to be in the setup/utils directory
+#It can be run from anywhere but don't move it around
+cd "$(dirname "$0")/../.."
+
+if [ -z "$app" ]
+then
+	echo -n "Enter app name: "
+	read app
+fi 
+if [ -z "$name" ]
+then
+	echo -n "Enter your first and last name: "
+	read name
+fi
+if [ -z "$netid" ]
+then
+	echo -n "Enter your netid: "
+	read netid
+fi
+
+mv "myapp/myapp" "myapp"/$app && mv "myapp" $app 
+
+for f in $(grep -l -r "myapp" .)
+do
+	if [ $f != "./setup/utils/startapp" ]
+	then
+		sed -i.temp -e "s/myapp/$app/g" $f
+	fi
+done
+sed -i.temp -e "s/First Last/$name/g" $app/package.json
+sed -i.temp -e "s/netid/$netid/g" $app/package.json
+
+for r in $(find . -name "*.temp" -or -name "*.DS_Store")
+do
+	rm $r
+done
