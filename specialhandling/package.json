@@ -58,7 +58,7 @@
     "jquery": "^3.2.1",
     "moment": "^2.22.1",
     "nightwatch": "^0.9.21",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "postcss-loader": "^2.0.6",
     "progress-bar-webpack-plugin": "^1.10.0",
     "raven-js": "^3.20.0",
